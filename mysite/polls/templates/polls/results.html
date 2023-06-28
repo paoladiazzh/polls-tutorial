@@ -20,7 +20,7 @@
     </tbody>
 </table>
 <br>
-<h2>Graph</h2>
+<h2>Chart</h2>
 <div>
     <canvas id="myChart"></canvas>
 </div>
@@ -49,7 +49,7 @@
         datasets: [{
           label: '# of Votes',
           data: votes,
-          borderWidth: 1
+          borderWidth: 3
         }]
       },
       options: {
@@ -62,4 +62,7 @@
     });
   </script>
 <br>
+<div>
+<a href="{% url 'polls:detail' question.id %}" class="btn btn-primary">Vote again?</a>
+</div>
 {% endblock %} 
