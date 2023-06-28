@@ -5,6 +5,7 @@
     <form action="{% url 'polls:vote' question.id %}" method="post">
         {% csrf_token %}
         <fieldset>
+            <br>
             <legend><h1>{{ question.question_text }}</h1></legend>
             {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
             {% for choice in question.choice_set.all %}
@@ -13,7 +14,7 @@
                     <label class="form-check-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
                 </div>
             {% endfor %}
-        </fieldset>
+        </fieldset><br>
         <input type="submit" class="btn btn-primary" value="Vote">
     </form>
 {% endblock %}

@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -29,6 +30,16 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
+    context_object_name = "question"
+    
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        question = self.get_object()
+        choices = question.choice_set.all()
+        data = [{'choice_text': choice.choice_text, 'votes': choice.votes} for choice in choices]
+        context['data'] = data
+        context['question'] = question
+        return context
 
 
 def vote(request, question_id):
@@ -48,4 +59,4 @@ def vote(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+        return HttpResponseRedirect(reverse("polls:results", args=(question_id,)))
