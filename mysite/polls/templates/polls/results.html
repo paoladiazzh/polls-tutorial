@@ -3,24 +3,8 @@
 {% block content %}
 <br>
 <h1>{{ question.question_text }}</h1>
-<table class="table table-light table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Choice</th>
-            <th scope="col">Votes</th>
-        </tr>
-    </thead>
-    <tbody class="table-group-divider">
-        {% for choice in question.choice_set.all %}
-        <tr>
-            <th>{{ choice.choice_text }}</th>
-            <th>{{ choice.votes }}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 <br>
-<h2>Chart</h2>
+<h3>Chart</h3>
 <div>
     <canvas id="myChart"></canvas>
 </div>
@@ -62,6 +46,29 @@
     });
   </script>
 <br>
+<h3>Voters</h3>
+<table class="table table-light table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Choice</th>
+            <th scope="col">Voters</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% for choice in question.choice_set.all %}
+        <tr>
+            <td>{{ choice.choice_text }}</td>
+            <td>
+              <ul class="list-group list-group-flush">
+                {% for vote in choice.vote_set.all %}
+                  <li class="list-group-item"> {{ vote.user.username }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <div>
 <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary">Vote again?</a>
 </div>

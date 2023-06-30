@@ -4,8 +4,9 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
+from django.contrib.auth.decorators import login_required
 
-from .models import Choice, Question
+from .models import Choice, Question, Vote
 
 
 class IndexView(generic.ListView):
@@ -41,7 +42,7 @@ class ResultsView(generic.DetailView):
         context['question'] = question
         return context
 
-
+@login_required
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -57,7 +58,9 @@ def vote(request, question_id):
             },
         )
     else:
+        user = request.user
         selected_choice.votes += 1
         selected_choice.save()
+        vote = Vote.objects.create(user=user, choice=selected_choice)
         return HttpResponseRedirect(reverse("polls:results", args=(question_id,)))
 

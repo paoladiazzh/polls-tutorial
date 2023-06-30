@@ -7,6 +7,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <ul class="nav nav-tabs">
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link active">User: {{ user.get_username }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+          <li class="nav-item" ><a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
+        {% endif %}
+    </ul>
     <nav class="navbar navbar-expand-lg bd-body-tertiary bg-primary">
         <div class="container-fluid ">
             <a class="navbar-brand">Polls</a>
